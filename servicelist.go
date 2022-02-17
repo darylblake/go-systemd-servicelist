@@ -1,18 +1,17 @@
 package go_systemd_servicelist
 
 import (
-	"fmt"
 	"log"
 	"os/exec"
 	"strings"
 )
 
 type ServiceItems struct {
-	Name 				string			`serviceName`
-	Loaded   			string			``
-	State 				string
-	Status  			string
-	Description 		string
+	Name 				string			`json:"serviceName"`
+	Loaded   			string			`json:"loaded"`
+	State 				string			`json:"state"`
+	Status  			string			`json:"status"`
+	Description 		string			`json:"description"`
 }
 
 func CollectServiceInfo() ([]ServiceItems, error) {
@@ -48,13 +47,17 @@ func processOutputBytesteam(bytestream []byte, serviceItemsList *[]ServiceItems)
 
 		//Process Service List
 		items := strings.Split(v," ")
-		itemLength := len(items)
+		log.Println(items)
 
+		/*
 		if itemLength > 4 {
+
+			for char = 0; char < len(items)
+
 			si := ServiceItems {
-				Name: items[0],
+				Name: items[2],
 				Loaded: items[1],
-				State: items[2],
+				State: ,
 				Status: items[3],
 			}
 			desc := ""
@@ -67,6 +70,8 @@ func processOutputBytesteam(bytestream []byte, serviceItemsList *[]ServiceItems)
 		} else { //We have ran off the end of the service list. this should be an empty line.
 			return nil
 		}
+
+		 */
 	}
 
 	return nil
