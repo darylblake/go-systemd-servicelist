@@ -1,10 +1,9 @@
 package go_systemd_servicelist
 
 import (
-	"log"
 	"os/exec"
-	"strings"
 	"regexp"
+	"strings"
 )
 
 type ServiceItems struct {
@@ -23,7 +22,6 @@ func CollectServiceInfo() ([]ServiceItems, error) {
 		return serviceItemsList, err
 	}
 
-	log.Println(string(outputData))
 
 	err = processOutputBytesteam(outputData, &serviceItemsList)
 	if err != nil {
@@ -42,23 +40,23 @@ func processOutputBytesteam(bytestream []byte, serviceItemsList *[]ServiceItems)
 
 	for k, v := range lines {
 		if k == 0 { //header ?? skip
-			log.Println("Skipping Header Row :P")
 			continue
 		}
 
-		re := regexp.MustCompile(`\s+([A-z-.]+)\s+([A-z]+)\s+([A-z]+)\s+([A-z]+)\s+(.+)`)
-		segments := re.FindAllStringSubmatch(v,-1)
+		re := regexp.MustCompile(`\s(.+\.service)\s+([A-z]+)\s+([A-z]+)\s+([A-z]+)\s+(.+)`)
+		segments := re.FindAllStringSubmatch(v, -1)
 
-		si := ServiceItems {
-			Name: segments[0][1],
-			Loaded: segments[0][2],
-			State: segments[0][3],
-			Status: segments[0][4],
-			Description: segments[0][5],
+		if len(segments) > 0 {
+			si := ServiceItems {
+				Name: segments[0][1],
+				Loaded: segments[0][2],
+				State: segments[0][3],
+				Status: segments[0][4],
+				Description: segments[0][5],
+			}
+			*serviceItemsList = append(*serviceItemsList, si)
 		}
-		*serviceItemsList = append(*serviceItemsList, si)
 	}
-
 
 	return nil
 }
