@@ -4,6 +4,7 @@ import (
 	"log"
 	"os/exec"
 	"strings"
+	"regexp"
 )
 
 type ServiceItems struct {
@@ -45,34 +46,19 @@ func processOutputBytesteam(bytestream []byte, serviceItemsList *[]ServiceItems)
 			continue
 		}
 
-		//Process Service List
-		items := strings.Split(v," ")
-		log.Println(items)
+		re := regexp.MustCompile(`\s+([A-z-.]+)\s+([A-z]+)\s+([A-z]+)\s+([A-z]+)\s+(.+)`)
+		segments := re.FindAllStringSubmatch(v,-1)
 
-		/*
-		if itemLength > 4 {
-
-			for char = 0; char < len(items)
-
-			si := ServiceItems {
-				Name: items[2],
-				Loaded: items[1],
-				State: ,
-				Status: items[3],
-			}
-			desc := ""
-			for i:=4; i < itemLength; i++ {
-
-				desc = fmt.Sprintf("%s %s",desc,items[i])
-			}
-			si.Description = strings.Trim(desc," \n")
-			*serviceItemsList = append(*serviceItemsList, si)
-		} else { //We have ran off the end of the service list. this should be an empty line.
-			return nil
+		si := ServiceItems {
+			Name: segments[0][1],
+			Loaded: segments[0][2],
+			State: segments[0][3],
+			Status: segments[0][4],
+			Description: segments[0][5],
 		}
-
-		 */
+		*serviceItemsList = append(*serviceItemsList, si)
 	}
+
 
 	return nil
 }
