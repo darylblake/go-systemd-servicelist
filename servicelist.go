@@ -48,11 +48,11 @@ func processOutputBytesteam(bytestream []byte, serviceItemsList *[]ServiceItems)
 
 		if len(segments) > 0 {
 			si := ServiceItems {
-				Name: segments[0][1],
-				Loaded: segments[0][2],
-				State: segments[0][3],
-				Status: segments[0][4],
-				Description: segments[0][5],
+				Name: strings.Trim(segments[0][1], " "),
+				Loaded: strings.Trim(segments[0][2], " "),
+				State: strings.Trim(segments[0][3], " "),
+				Status: strings.Trim(segments[0][4], " "),
+				Description: strings.Trim(segments[0][5], " "),
 			}
 			*serviceItemsList = append(*serviceItemsList, si)
 		}

@@ -53,3 +53,5 @@ Output
 Hopefully someone finds it useful. I have....
 
 
+TODO: Improvements from: https://www.digitalocean.com/community/tutorials/how-to-use-systemctl-to-manage-systemd-services-and-units
+
